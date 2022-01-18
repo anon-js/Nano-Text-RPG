@@ -16,10 +16,19 @@ Ver 0.0.1
 
 ```js
 .join(); //가입
+
 .info(); //내정보
+
 .remove(); //탈퇴
+
+/**
+ * 필요한 값
+ * place_name: 장소 이름
+ */
 .move(place_name); //이동
+
 .read_item(); //아이템
+
 .live(); //부활
 ```
 
@@ -27,6 +36,12 @@ Ver 0.0.1
 
 ```js
 .training(); //훈련
+
+/**
+ * 필요한 값
+ * item_name: 아이템 이름
+ * item_int: 아이템 갯수
+ */
 .use_item(item_name, item_int); //아이템 사용
 ```
 
@@ -34,10 +49,10 @@ Ver 0.0.1
 
 index.js
 ```js
-const 변수명 = require("스크립트.js"); // 모듈 불러오기 (예시)
+const game = require("Game.js"); // 모듈 불러오기 (예시)
 ```
 ```js
-변수명.join(); // 함수 불러오기 (예시)
+game.join(); // 함수 불러오기 (예시)
 ```
 
 
