@@ -6,14 +6,13 @@
  * 소스 자체에 오류가 있어도 고쳐서 사용 해 주세요.
  */
 
-fs, ro, m, s, r, h;
+let fs, s, r;
+module.exports.init = (sender, replier, file) => { s = sender; r = replier; fs = file; };
 path = "/sdcard/nanobot/rpg/user.json";
 va = "\u200b".repeat(500);
 user = JSON.parse(fs.read(path));
 place = ["마을", "상점", "훈련장", "숲1", "숲2", "사막", "광야", "깊은 산골1", "깊은 산골2"];
 lv_int = 0;
-
-module.exports.init = (room, msg, sender, replier, fs) => { ro = room; m = msg; s = sender; r = replier; fs = file; };
 
 const save = () => { fs.write(path, JSON.stringify(user)); };
 
@@ -69,12 +68,11 @@ const levelUp = () => {
     user.s.fexp += (user.s.lv * Math.floor((user.s.fhp / 2)));
     user.s.hp = user.s.fhp;
     save();
-    if (user.s.fexp > user.s.exp) levelUp();
-    else {
+    if (user.s.fexp > user.s.exp) {
         r.reply("레벨업! Level Up!\n\n - 레벨이 +" + lv_int + " 올랐습니다.");
         lv_int = 0;
         return;
-    }
+    } else levelUp();
 }
 
 module.exports.join = () => {
@@ -100,7 +98,7 @@ module.exports.info = () => {
         "\n" + 
         "[ 기본 ]\n" + 
         "Lv." + user.s.lv + " | Exp: " + nd(user.s.exp) + "/" + nd(user.s.fexp) + "\n" +
-        "hp: " + user.s.hp + "/" + user.s.fhp + (user.s.die ? " (부활까지 약 " + (Math.floor(((user.s.dieTime + 180000) - Date.now()) / 1000) >= 60 ? Math.floor((((user.s.dieTime + 180000) - Date.now()) / 1000) / 60) + "분" : Math.floor(((user.s.dieTime + 180000) - Date.now()) / 1000) + "초") + " 남음)" : "") + "\n" +
+        "hp: " + user.s.hp + "/" + user.s.fhp + (user.s.die ? ((Date.now() - user.s.dieTime) < 180000 ? " (약 " + (Math.floor(((user.s.dieTime + 180000) - Date.now()) / 1000) >= 60 ? Math.floor((((user.s.dieTime + 180000) - Date.now()) / 1000) / 60) + "분" : Math.floor(((user.s.dieTime + 180000) - Date.now()) / 1000) + "초") + " 뒤 부활 가능)" : " (부활 가능)") : "") + "\n" +
         "데미지: " + user.s.dem + "\n" +
         "money: " + user.s.money + "*\n" +
         "장소: " + user.s.place + "\n" +
