@@ -9,7 +9,7 @@ Nano Bot (KakaoTalk Bot) Game Module
 > 쓰실 분은 쓰셔도 되는데 개발은 끝나고 써주세요.
 
 ## 패치 내역
-ver 0.0.1
+Ver 0.0.1
 > Bridge 사용하지 않고 module로 변경.
 
 ## 구현 된 기능
