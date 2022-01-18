@@ -4,6 +4,7 @@ Nano Bot (KakaoTalk Bot) Game Module
 메신저봇R 기준으로 돌아가는 소스입니다.
 * 모든 설명은 메신저봇R 기준으로 설명 됩니다.
 * Module 경로에 스크립트를 넣어주세요. (이 소스만으로는 작동 X)
+  * global_modules이나 modules 안에
 * 쓰실 분은 쓰셔도 되는데 개발은 끝나고 써주세요.
 
 ## 패치 내역
