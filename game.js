@@ -13,21 +13,11 @@ user = JSON.parse(fs.read(path));
 place = ["마을", "상점", "훈련장", "숲1", "숲2", "사막", "광야", "깊은 산골1", "깊은 산골2"];
 lv_int = 0;
 
-const init = (room, msg, sender, replier, fs) => { ro = room; m = msg; s = sender; r = replier; fs = file; };
+module.exports.init = (room, msg, sender, replier, fs) => { ro = room; m = msg; s = sender; r = replier; fs = file; };
 
 const save = () => { fs.write(path, JSON.stringify(user)); };
 
 const nd = (x) => { return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); };
-
-const live = () => {
-    if (!user.s.die) return;
-    if (Date.now() - user.s.dieTime < 180000) return r.reply("부활까지 약 " + (Math.floor(((user.s.dieTime + 180000) - Date.now()) / 1000) >= 60 ? Math.floor((((user.s.dieTime + 180000) - Date.now()) / 1000) / 60) + "분" : Math.floor(((user.s.dieTime + 180000) - Date.now()) / 1000) + "초") + " 남음");
-    user.s.die = false;
-    user.s.dieTime = 0;
-    user.s.hp = user.s.fhp;
-    save();
-    return r.reply("부활 했습니다.")
-}
 
 const isMoving = (p) => {
     isM = {
@@ -42,22 +32,6 @@ const isMoving = (p) => {
         "광야" : ["사막"]
     };
     return isM[user.s.place].indexOf(p) != -1;
-}
-
-const levelUp = () => {
-    lv_int++;
-    user.s.exp -= user.s.fexp;
-    user.s.fhp += user.s.lv;
-    user.s.lv += 1;
-    user.s.fexp += (user.s.lv * Math.floor((user.s.fhp / 2)));
-    user.s.hp = user.s.fhp;
-    save();
-    if (user.s.fexp > user.s.exp) levelUp();
-    else {
-        r.reply("레벨업! Level Up!\n\n - 레벨이 +" + lv_int + " 올랐습니다.");
-        lv_int = 0;
-        return;
-    }
 }
 
 const fight = (mon_name, mon_dem, mon_hp, e, m, log, turn) => {
@@ -87,7 +61,23 @@ const fight = (mon_name, mon_dem, mon_hp, e, m, log, turn) => {
     fight(mon_name, mon_dem, mon_hp, e, m, log, !turn);
 }
 
-const join = () => {
+const levelUp = () => {
+    lv_int++;
+    user.s.exp -= user.s.fexp;
+    user.s.fhp += user.s.lv;
+    user.s.lv += 1;
+    user.s.fexp += (user.s.lv * Math.floor((user.s.fhp / 2)));
+    user.s.hp = user.s.fhp;
+    save();
+    if (user.s.fexp > user.s.exp) levelUp();
+    else {
+        r.reply("레벨업! Level Up!\n\n - 레벨이 +" + lv_int + " 올랐습니다.");
+        lv_int = 0;
+        return;
+    }
+}
+
+module.exports.join = () => {
     if (user == null) fs.write(path, "{}");
     if (user.s != null) return r.reply("이미 가입 되셨습니다."); 
     user.s = { lv : 1, exp : 0, fexp : 15, money : 0, dem : 5, hp : 10, fhp : 10, die : false, dieTime : 0, place : "마을", weapon : "맨 손", top : "가죽 흉갑", bottom : "가죽 레깅스", item : { "체력 물약" : 20 } };
@@ -95,7 +85,15 @@ const join = () => {
     return r.reply("가입을 축하드립니다!");
 };
 
-const info = () => {
+module.exports.remove = () => {
+    if (user.s == null) return r.reply("탈퇴 조건이 충족되지 않았습니다.");
+    delete user.s;
+    save();
+    return r.reply("탈퇴 되셨습니다.");
+}
+
+
+module.exports.info = () => {
     if (user.s == null) return r.reply("가입 후 이용 가능합니다.");
     return r.reply(
         "¤ [RPG] " + s + "님 정보 ¤\n" +
@@ -114,7 +112,7 @@ const info = () => {
     ); 
 };
 
-const read_item = () => {
+module.exports.read_item = () => {
     if (user.s == null) return r.reply("가입 후 이용 가능합니다.");
     if (user.s.item == {}) return r.reply("¤ [RPG] " + s + "님 아이템 ¤\n\n아이템 없음 X");
     keys = Object.keys(user.s.item);
@@ -125,7 +123,7 @@ const read_item = () => {
     return r.reply("¤ [RPG] " + s + "님 아이템 ¤\n\n" + str.join("\n"));
 }
 
-const use_item = (n, i) => {
+module.exports.use_item = (n, i) => {
     if (user.s == null) return r.reply("가입 후 이용 가능합니다.");
     if (isNaN(i)) return r.reply("갯수를 입력 해주세요.");
     if (i <= 0) return r.reply("제대로 된 갯수를 입력 해주세요.");
@@ -140,14 +138,16 @@ const use_item = (n, i) => {
     } else return r.reply("아이템을 사용 했습니다.");
 }
 
-const remove = () => {
-    if (user.s == null) return r.reply("탈퇴 조건이 충족되지 않았습니다.");
-    delete user.s;
+module.exports.live = () => {
+    if (!user.s.die) return;
+    if (Date.now() - user.s.dieTime < 180000) return r.reply("부활까지 약 " + (Math.floor(((user.s.dieTime + 180000) - Date.now()) / 1000) >= 60 ? Math.floor((((user.s.dieTime + 180000) - Date.now()) / 1000) / 60) + "분" : Math.floor(((user.s.dieTime + 180000) - Date.now()) / 1000) + "초") + " 남음");
+    user.s.die = false;
+    user.s.dieTime = 0;
+    user.s.hp = user.s.fhp;
     save();
-    return r.reply("탈퇴 되셨습니다.");
+    return r.reply("부활 했습니다.")
 }
-
-const move = (p) => {
+module.exports.move = (p) => {
     if (place.indexOf(user.s.place) == -1) {
         user.s.place = "마을";
         save();
@@ -161,7 +161,7 @@ const move = (p) => {
     return r.reply(p + "(으)로 이동 했습니다.");
 }
 
-const training = () => {
+module.exports.training = () => {
     if (user.s.place != "훈련장") return r.reply("훈련장이 아니면 훈련을 할 수 없습니다.");
     if (user.s.hp <= 0) return r.reply("체력이 모두 소모 되어 있습니다.");
     lv = user.s.lv;
