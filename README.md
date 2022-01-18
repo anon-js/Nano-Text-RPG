@@ -31,14 +31,12 @@ Nano Bot (KakaoTalk Bot) Game Module
 
 index.js
 ```js
-const 변수명 = require("스크립트.js"); //불러오기
-function response(...) {
-  if (msg == "가입") 변수명.join(); //가입 함수
-  .
-  .
-  .
-}
+const 변수명 = require("스크립트.js"); // 모듈 불러오기 (예시)
 ```
+```js
+변수명.join(); // 함수 불러오기 (예시)
+```
+
 
 사용자가 기본 지식을 가지고 있지 않으면 사용하는데 어려움이 있을 수 있습니다.
 
