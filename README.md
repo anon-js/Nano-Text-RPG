@@ -20,39 +20,46 @@ Nano Bot (KakaoTalk Bot) Game Module
 > training 함수 구현
 
 **Ver 0.0.3**
+> 훈련 밸런스 수정
+> 레벨 업 메시지 수정
+> use_item 함수 구현
+
+**Ver 0.0.4**
 > 개발 중...
 
 ## 구현 된 기능
 
 ```js
-.join(); //가입
+.join(); // 가입
 
-.info(); //내정보
+.info(); // 내정보
 
-.remove(); //탈퇴
+.remove(); // 탈퇴
 
 /**
  * 필요한 값
  * place_name: 장소 이름
  */
-.move(place_name); //이동
+.move(place_name); // 이동
 
-.read_item(); //아이템
+.read_item(); // 아이템
 
-.live(); //부활
+.live(); // 부활
 
-.training(); //훈련
-```
+.training(); // 훈련
 
-## 구현 중인 기능
-
-```js
 /**
  * 필요한 값
  * item_name: 아이템 이름
  * item_int: 아이템 갯수
  */
-.use_item(item_name, item_int); //아이템 사용
+.use_item(item_name, item_int); // 아이템 사용
+```
+
+## 구현 중인 기능
+
+```js
+battle(); // 전투
 ```
 
 ## ex) 예시
