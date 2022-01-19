@@ -26,6 +26,9 @@ Nano Bot (KakaoTalk Bot) Game Module
 > 
 > use_item 함수 구현
 
+**Ver 0.0.3.1**
+> 약간의 밸런스 조절
+
 **Ver 0.0.4**
 > 개발 중...
 
