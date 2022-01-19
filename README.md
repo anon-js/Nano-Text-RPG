@@ -21,7 +21,9 @@ Nano Bot (KakaoTalk Bot) Game Module
 
 **Ver 0.0.3**
 > 훈련 밸런스 수정
+> 
 > 레벨 업 메시지 수정
+> 
 > use_item 함수 구현
 
 **Ver 0.0.4**
