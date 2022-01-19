@@ -14,6 +14,7 @@ place = ["마을", "상점", "훈련장", "숲1", "숲2", "사막", "광야", "�
 lv_int = 0;
 
 save = function() { fs.write(path, JSON.stringify(user)); };
+
 nd = function(x) { return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); };
 
 isMoving = function(p) {
@@ -70,18 +71,38 @@ fight = function(mon_name, mon_dem, mon_hp, e, m, log, turn) {
 }
 
 levelUp = function() {
+    let prev_lv, prev_fhp, prev_dem;
     lv_int++;
+    if (lv_int == 1) {
+        prev_lv = user.s.lv;
+        prev_fhp = user.s.fhp;
+        prev_dem = user.s.dem;
+    }
     user.s.exp -= user.s.fexp;
     user.s.fhp += user.s.lv;
     user.s.lv += 1;
     user.s.fexp += (user.s.lv * Math.floor((user.s.fhp / 2)));
     user.s.hp = user.s.fhp;
+    user.s.dem += Math.floor(user.s.lv / 2 < 1 ? 1 : user.s.lv / 2);
     save();
     if (user.s.fexp > user.s.exp) {
-        r.reply("레벨업! Level Up!\n\n - 레벨이 +" + lv_int + " 올랐습니다.");
+        r.reply("레벨업! Level Up!\n\n - 레벨이 +" + lv_int + " 올랐습니다.\n\n + Lv." + prev_lv + " → " + user.s.lv + "\n + 체력: " + prev_fhp + " → " + user.s.fhp + "\n + 공격력: " + prev_dem + " → " + user.s.dem);
         lv_int = 0;
         return;
     } else levelUp();
+}
+
+useItems = function(n, i) {
+    for (i; i > 0; i--) {
+        if (n == "체력물약") user.s.fhp < 30 ? user.s.hp = user.s.fhp : ((user.s.hp + 30) < user.s.fhp ? user.s.hp += 30 : user.s.hp = user.s.fhp);
+        user.s.item[n]--;
+    save();
+    }
+    if (user.s.item[n] == 0) {
+        delete user.s.item[n];
+        save();
+        return r.reply("아이템을 모두 사용 했습니다.");
+    } else return r.reply("아이템을 사용 했습니다.\n\n");
 }
 
 module.exports = {
@@ -89,7 +110,24 @@ module.exports = {
     join : function() {
         if (user == null) fs.write(path, "{}");
         if (user.s != null) return r.reply("이미 가입 되셨습니다."); 
-        user.s = { lv : 1, exp : 0, fexp : 15, money : 0, dem : 5, hp : 10, fhp : 10, die : false, dieTime : 0, place : "마을", weapon : "맨 손", top : "가죽 흉갑", bottom : "가죽 레깅스", item : { "체력 물약" : 20 } };
+        user.s = {
+            lv : 1,
+            exp : 0,
+            fexp : 15,
+            money : 0,
+            dem : 5,
+            hp : 10,
+            fhp : 10,
+            die : false,
+            dieTime : 0,
+            place : "마을",
+            weapon : "맨 손",
+            top : "가죽 흉갑",
+            bottom : "가죽 레깅스",
+            item : {
+                "체력물약" : 20,
+            }
+        };
         save();
         return r.reply("가입을 축하드립니다!");
     },
@@ -129,19 +167,15 @@ module.exports = {
     },
     use_item  : function(n, i) {
         if (user.s == null) return r.reply("가입 후 이용 가능합니다.");
+        if (user.s.hp <= 0) return r.reply("체력이 모두 소모 되어 있습니다.");
         if (isNaN(i)) return r.reply("갯수를 입력 해주세요.");
         if (i <= 0) return r.reply("제대로 된 갯수를 입력 해주세요.");
         if (Object.keys(user.s.item).indexOf(n) == -1) return r.reply("아이템이 존재하지 않습니다.");
         if (user.s.item[n] <= i) return r.reply("아이템 갯수가 부족합니다.");
-        user.s.item[n] -= i;
-        save();
-        if (user.s.item[n] == 0) {
-            delete user.s.item[n];
-            save();
-            return r.reply("아이템을 모두 사용 했습니다.");
-        } else return r.reply("아이템을 사용 했습니다.");
+        useItems(n, i);
     },
     live  : function() {
+        if (user.s == null) return r.reply("가입 후 이용 가능합니다.");
         if (!user.s.die) return;
         if (Date.now() - user.s.dieTime < 180000) return r.reply("부활까지 약 " + (Math.floor(((user.s.dieTime + 180000) - Date.now()) / 1000) >= 60 ? Math.floor((((user.s.dieTime + 180000) - Date.now()) / 1000) / 60) + "분" : Math.floor(((user.s.dieTime + 180000) - Date.now()) / 1000) + "초") + " 남음");
         user.s.die = false;
@@ -151,11 +185,13 @@ module.exports = {
         return r.reply("부활 했습니다.")
     },
     move  : function(p) {
+        if (user.s == null) return r.reply("가입 후 이용 가능합니다.");
         if (user.s.hp <= 0) return r.reply("체력이 모두 소모 되어 있습니다.");
         if (user.s.place == p) return r.reply("현재 장소에 계십니다.");
         isMoving(p);
     },
     training  : function() {
+        if (user.s == null) return r.reply("가입 후 이용 가능합니다.");
         if (user.s.hp <= 0) return r.reply("체력이 모두 소모 되어 있습니다.");
         if (user.s.place != "훈련장") return r.reply("훈련장이 아니면 훈련을 할 수 없습니다.");
         random_num = Math.floor(Math.random() * (user.s.hp / 2)) + user.s.lv;
