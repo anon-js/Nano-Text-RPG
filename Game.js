@@ -115,11 +115,11 @@ module.exports = {
         user.s = {
             lv : 1,
             exp : 0,
-            fexp : 15,
+            fexp : 12,
             money : 0,
             dem : 5,
-            hp : 10,
-            fhp : 10,
+            hp : 20,
+            fhp : 20,
             die : false,
             dieTime : 0,
             place : "마을",
@@ -198,6 +198,6 @@ module.exports = {
         if (user.s.place != "훈련장") return r.reply("훈련장이 아니면 훈련을 할 수 없습니다.");
         random_num = Math.floor(Math.random() * (user.s.hp / 2)) + user.s.lv;
         mons_hp = Math.floor(random_num * (user.s.dem / 3)) + user.s.lv;
-        return fight((user.s.lv > 100 ? "신성한 훈련 봇" : (user.s.lv > 60 ? "고급 훈련 봇" : (user.s.lv > 30 ? "중급 훈련 봇" : "초급 훈련 봇"))), random_num, mons_hp, Math.floor(Math.random() * mons_hp) + Math.floor(mons_hp / 3), Math.floor(Math.random() * (mons_hp / 3)) + Math.floor(mons_hp / 3), [], true);
+        return fight((user.s.lv > 100 ? "신성한 훈련 봇" : (user.s.lv > 60 ? "고급 훈련 봇" : (user.s.lv > 30 ? "중급 훈련 봇" : "초급 훈련 봇"))), Math.floor(mons_hp / 2.5), mons_hp, Math.floor(Math.random() * mons_hp) + Math.floor(mons_hp / 3), Math.floor(Math.random() * (mons_hp / 3)) + Math.floor(mons_hp / 3), [], true);
     }
 }
