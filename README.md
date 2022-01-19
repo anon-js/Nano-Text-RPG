@@ -9,8 +9,18 @@ Nano Bot (KakaoTalk Bot) Game Module
 > 쓰실 분은 쓰셔도 되는데 개발은 끝나고 써주세요.
 
 ## 패치 내역
-Ver 0.0.1
+**Ver 0.0.1**
 > Bridge 사용하지 않고 module로 변경.
+
+**Ver 0.0.2**
+> module 방식 수정
+> 
+> move 함수 작동 방식 수정
+> 
+> training 함수 구현
+
+**Ver 0.0.3**
+> 개발 중...
 
 ## 구현 된 기능
 
@@ -30,13 +40,13 @@ Ver 0.0.1
 .read_item(); //아이템
 
 .live(); //부활
+
+.training(); //훈련
 ```
 
 ## 구현 중인 기능
 
 ```js
-.training(); //훈련
-
 /**
  * 필요한 값
  * item_name: 아이템 이름
