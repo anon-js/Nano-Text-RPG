@@ -67,7 +67,7 @@ Nano Bot (KakaoTalk Bot) Game Module
 battle(); // 전투
 ```
 
-## ex) 예시
+## 예시 ex)
 
 index.js
 ```js
