@@ -30,7 +30,7 @@ Nano Bot (KakaoTalk Bot) Game Module
 > 약간의 밸런스 조절
 
 **Ver 0.0.4**
-> 개발 중...
+> 문제 발견! (수정 중...)
 
 ## 구현 된 기능
 
