@@ -45,6 +45,12 @@ Nano Bot (KakaoTalk Bot) Game Module
 ## 구현 된 기능
 
 ```js
+.init(sender, replier); // 초기화
+/**
+ * sender: 보내는 사람
+ * replier: 답장
+ */
+
 .join(); // 가입
 
 .info(); // 내정보
