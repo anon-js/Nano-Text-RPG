@@ -29,12 +29,18 @@ Nano Bot (KakaoTalk Bot) Game Module
 **Ver 0.0.3.1**
 > 약간의 밸런스 조절
 
-**Ver 0.0.4 (패치 중)**
-> 오류 수정 완료!
+**Ver 0.0.4**
+> 스크립트 이름 변경 (Game.js → Rpg.js)
+> 
+> 스크립트 불러오는 방식 
 >
-> 새로운 시스템 추가 및 함수 이름 변경
+> 사용자간 정보 공유 버그 수정
 >
-> 소스 구조 변경 (예정)
+> 상점, 지도 등 사용자 편의 기능 추가
+>
+> 소스 구조 변경
+>
+> 약간의 밸런스 조절
 
 ## 구현 된 기능
 
@@ -45,11 +51,10 @@ Nano Bot (KakaoTalk Bot) Game Module
 
 .remove(); // 탈퇴
 
+.move(place_name); // 이동
 /**
- * 필요한 값
  * place_name: 장소 이름
  */
-.move(place_name); // 이동
 
 .read_item(); // 아이템
 
@@ -57,17 +62,22 @@ Nano Bot (KakaoTalk Bot) Game Module
 
 .training(); // 훈련
 
+.store(); // 상점
+
+.map(); // 지도
+
+.use_item(item_name, item_int); // 아이템 사용
 /**
- * 필요한 값
  * item_name: 아이템 이름
  * item_int: 아이템 갯수
  */
-.use_item(item_name, item_int); // 아이템 사용
 ```
 
 ## 구현 중인 기능
 
 ```js
+buy(); // 구매
+
 battle(); // 전투
 ```
 
@@ -75,10 +85,21 @@ battle(); // 전투
 
 index.js
 ```js
-const game = require("Game.js"); // 모듈 불러오기 (예시)
+const rpgGame = require("Rpg.js"); // 모듈 불러오기 (예시)
+const rpg = rpgGame(path, va, fs);
+/**
+ * path: 파일 경로
+ * va: 전체보기 ['\u200b'.repeat(500);]
+ * fs: FileStream
+ */
 ```
 ```js
-game.join(); // 함수 불러오기 (예시)
+rpg.init(s, r); // 함수 불러오기 (예시)
+/**
+ * s: sender
+ * r: replier
+ */
+rpg.함수명(/* 필요 시 매개변수 */)
 ```
 
 
