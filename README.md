@@ -1,5 +1,5 @@
-# Nano-Text-RPG
-[개발 중단] Nano Bot (KakaoTalk Bot) Game Module
+# [개발 중단] Nano-Text-RPG
+Nano Bot (KakaoTalk Bot) Game Module
 
 메신저봇R 기준으로 돌아가는 소스입니다.
 > 모든 설명은 메신저봇R 기준으로 설명 됩니다.
